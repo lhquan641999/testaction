@@ -7,21 +7,21 @@ on:
       - dev
 jobs:
   build_dev:
-    if: ${{ github.ref == 'ref/heads/dev' }}
+    if: ${{ github.ref == 'refs/heads/dev' }}
     uses: ./.github/workflows/reuseworkflow.yml
     with:
       branch: "main"
       name_space:  "main"
     secrets: inherit
   build_uat:
-    if:  ${{ github.ref == 'ref/heads/uat' }}
+    if:  ${{ github.ref == 'refs/heads/uat' }}
     uses: ./.github/workflows/reuseworkflow.yml
     with:
       branch: "main"
       name_space:  "main"
     secrets: inherit
   build_main:
-    if:   ${{ github.ref == 'ref/heads/main' }}
+    if:   ${{ github.ref == 'refs/heads/main' }}
     uses: ./.github/workflows/reuseworkflow.yml
     with:
       branch: "main"
