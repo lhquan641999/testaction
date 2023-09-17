@@ -1,0 +1,32 @@
+name: workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "branch"
+        required: false
+        type: string
+
+jobs:
+  build_dev:
+    if: ${{github.event.inputs.branch}} == "dev"
+    uses: ./.github/workflows/reuseworkflow.yml
+    with:
+      branch: ${{ github.event.inputs.branch }}
+      name_space:  ${{ github.event.inputs.branch }}
+    secrets: inherit
+  build_uat:
+    if: ${{github.event.inputs.branch}} == "uat"
+    uses: ./.github/workflows/reuseworkflow.yml
+    with:
+      branch: ${{ github.event.inputs.branch }}
+      name_space:  ${{ github.event.inputs.branch }}
+    secrets: inherit
+  build_main:
+    if: ${{github.event.inputs.branch}} == "main"
+    uses: ./.github/workflows/reuseworkflow.yml
+    with:
+      branch: ${{ github.event.inputs.branch }}
+      name_space:  ${{ github.event.inputs.branch }}
+    secrets: inherit
