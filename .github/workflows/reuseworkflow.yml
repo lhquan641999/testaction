@@ -19,6 +19,9 @@ env:
 
 jobs:
   buildImage:
+    permissions:
+      contents: read
+      id-token: write
     env: 
       BRANCH: ${{inputs.branch }}
     runs-on: 
