@@ -6,6 +6,7 @@ on:
       branch:
         description: "branch"
         required: false
+        default: "dev"
         type: string
 
 jobs:
