@@ -6,7 +6,7 @@ on:
       branch:
         description: "branch"
         required: false
-        default: "dev"
+        default: dev
         type: string
 
 jobs:
@@ -18,14 +18,14 @@ jobs:
       name_space:  ${{ github.event.inputs.branch }}
     secrets: inherit
   build_uat:
-    if: ${{github.event.inputs.branch}} == "uat"
+    if: false
     uses: ./.github/workflows/reuseworkflow.yml
     with:
       branch: ${{ github.event.inputs.branch }}
       name_space:  ${{ github.event.inputs.branch }}
     secrets: inherit
   build_main:
-    if: ${{github.event.inputs.branch}} == "main"
+    if: false
     uses: ./.github/workflows/reuseworkflow.yml
     with:
       branch: ${{ github.event.inputs.branch }}
