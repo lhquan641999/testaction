@@ -19,72 +19,26 @@ env:
 
 jobs:
   buildImage:
-    permissions:
-      contents: read
-      id-token: write
     runs-on: 
       labels: linux
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
-
-      - name: ACR build
-        id: build-push-acr
-        uses: azure/acr-build@v1
-        with:
-          service_principal: ${{ secrets.service_principal }}
-          service_principal_password: ${{ secrets.service_principal_password }}
-          tenant: ${{ secrets.tenant }}
-          registry: ${{ secrets.registry }}
-          repository: ${{ secrets.repository }}
-          image: azure-vote-front
-          folder: azure-vote
-          branch: ${{ github.event.inputs.branch }}
-          tag: ${{ github.sha }}
-          git_access_token: ${{ secrets.git_access_token }}
-          # git_url: https://github.com/websolution625/webapp-aks.git
-
-  deploy:
-    permissions:
-      actions: read
-      contents: read
-      id-token: write
-    runs-on: 
-      labels: linux
-    needs: [buildImage]
-    steps:
-      # Checks out the repository this file is in
-      - uses: actions/checkout@v3
-
-      - name: Azure login
-        id: login
-        uses: azure/login@v1.4.3
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Set AKS context
-        id: set-context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: "${{ env.RESOURCE_GROUP }}"
-          cluster-name: "${{ env.CLUSTER_NAME }}"
-
-      - name: Setup kubectl
-        id: install-kubectl
-        uses: azure/setup-kubectl@v3
-      
-      - name: Run a multi-line script
+      - name: test
         run: |
-          echo test, and deploy your project.
-          kubectl get node -owide -v6
-          cat /home/runner/work/_temp/kubeconfig_*
-
-      - name: Deploy to AKS
-        id: deploy-aks
-        uses: Azure/k8s-deploy@v4
-        with:
-          namespace: ${{ github.event.inputs.name_space }}
-          manifests: |
-            azure-vote-all-in-one-redis.yaml
-          images: "${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}"
-          pull-images: false
+            cat ${{ github.event.inputs.branch }}.yml
+      # - name: ACR build
+      #   id: build-push-acr
+      #   uses: azure/acr-build@v1
+      #   with:
+      #     service_principal: ${{ secrets.service_principal }}
+      #     service_principal_password: ${{ secrets.service_principal_password }}
+      #     tenant: ${{ secrets.tenant }}
+      #     registry: ${{ secrets.registry }}
+      #     repository: ${{ secrets.repository }}
+      #     image: azure-vote-front
+      #     folder: azure-vote
+      #     branch: ${{ github.event.inputs.branch }}
+      #     tag: ${{ github.sha }}
+      #     git_access_token: ${{ secrets.git_access_token }}
+      #     # git_url: https://github.com/websolution625/webapp-aks.git
