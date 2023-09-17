@@ -1,33 +1,29 @@
 name: workflow
-
-on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "branch"
-        required: false
-        default: 'dev'
-        type: string
-
+on:  
+  push:
+    branches:
+      - main
+      - uat
+      - dev
 jobs:
   build_dev:
-    if: ${{github.event.inputs.branch == 'dev' }}
+    if: ${{ github.ref == 'ref/heads/dev' }}
     uses: ./.github/workflows/reuseworkflow.yml
     with:
-      branch: ${{ github.event.inputs.branch }}
-      name_space:  ${{ github.event.inputs.branch }}
+      branch: "main"
+      name_space:  "main"
     secrets: inherit
   build_uat:
-    if: ${{github.event.inputs.branch == 'uat' }}
+    if:  ${{ github.ref == 'ref/heads/uat' }}
     uses: ./.github/workflows/reuseworkflow.yml
     with:
-      branch: ${{ github.event.inputs.branch }}
-      name_space:  ${{ github.event.inputs.branch }}
+      branch: "main"
+      name_space:  "main"
     secrets: inherit
   build_main:
-    if:  ${{github.event.inputs.branch == 'main' }}
+    if:   ${{ github.ref == 'ref/heads/main' }}
     uses: ./.github/workflows/reuseworkflow.yml
     with:
-      branch: ${{ github.event.inputs.branch }}
-      name_space:  ${{ github.event.inputs.branch }}
+      branch: "main"
+      name_space: "main"
     secrets: inherit
