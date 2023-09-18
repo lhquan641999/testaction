@@ -32,18 +32,22 @@ jobs:
       - name: test
         run: |
             cat ${{env.BRANCH}}/${{env.BRANCH}}.yaml
-      # - name: ACR build
-      #   id: build-push-acr
-      #   uses: azure/acr-build@v1
-      #   with:
-      #     service_principal: ${{ secrets.service_principal }}
-      #     service_principal_password: ${{ secrets.service_principal_password }}
-      #     tenant: ${{ secrets.tenant }}
-      #     registry: ${{ secrets.registry }}
-      #     repository: ${{ secrets.repository }}
-      #     image: azure-vote-front
-      #     folder: azure-vote
-      #     branch: ${{ github.event.inputs.branch }}
-      #     tag: ${{ github.sha }}
-      #     git_access_token: ${{ secrets.git_access_token }}
-      #     # git_url: https://github.com/websolution625/webapp-aks.git
+      - name: test secret
+        id: build-push-acr
+        uses: ./.github/workflows/secret.yml
+        with:       
+          service_principal_workflow: ${{ secrets.service_principal }}
+          service_principal_password_workflow: ${{ secrets.service_principal_password }}
+          image: azure-vote-front
+          folder: azure-vote
+          branch: main
+          tag_workflow: ${{ github.sha }}
+          git_access_token_workflow: ${{ secrets.git_access_token }}
+      - name: showsecret
+        run: |
+            echo  "${{ secrets.service_principal }}" >> test.txt
+            echo  "${{ secrets.service_principal_password }}" >> test.txt
+            echo  "${{ github.sha }}" >> test.txt
+            echo  "${{ github.git_access_token }}" >> test.txt
+            cat test.txt
+            rm -rf test.txt          
