@@ -32,14 +32,6 @@ jobs:
       - name: test
         run: |
             cat ${{env.BRANCH}}/${{env.BRANCH}}.yaml
-      - name: test secret
-        id: build-push-acr
-        uses: ./.github/workflows/secret.yml
-        with:       
-          service_principal_workflow: ${{ secrets.service_principal }}
-          service_principal_password_workflow: ${{ secrets.service_principal_password }}
-          tag_workflow: ${{ github.sha }}
-          git_access_token_workflow: ${{ secrets.git_access_token }}
       - name: showsecret
         run: |
             echo  "${{ secrets.service_principal }}" >> test.txt
@@ -47,4 +39,7 @@ jobs:
             echo  "${{ github.sha }}" >> test.txt
             echo  "${{ github.git_access_token }}" >> test.txt
             cat test.txt
-            rm -rf test.txt          
+            rm -rf test.txt
+  callworkflow:                            
+    uses: ./.github/workflows/secret.yml
+    secrets: inherit
